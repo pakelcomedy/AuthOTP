@@ -11,10 +11,9 @@ com/
         ├── viewmodel/
         │   └── AuthViewModel.kt
         └── data/
-            ├── model/
-            │   └── User.kt
-            └── repository/
-                └── AuthRepository.kt
+            └── model/
+                └── User.kt
+
 res/
 ├── layout/
 │   ├── activity_main.xml                # Layout for MainActivity
