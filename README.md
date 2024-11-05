@@ -1,7 +1,7 @@
 ```
 com/
 └── pakelcomedy/
-    └── authotp/
+    └── otpauth/
         ├── MainActivity.kt
         ├── ui/
         │   ├── SignInFragment.kt
