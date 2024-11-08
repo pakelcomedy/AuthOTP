@@ -6,6 +6,7 @@ com/
         ├── ui/
         │   ├── SignInFragment.kt
         │   ├── SignUpFragment.kt
+        │   ├── PasswordFragment.kt
         │   ├── OtpVerificationFragment.kt
         │   └── HomeFragment.kt
         ├── viewmodel/
@@ -19,6 +20,7 @@ res/
 │   ├── activity_main.xml                # Layout for MainActivity
 │   ├── fragment_sign_in.xml             # Layout for SignInFragment
 │   ├── fragment_sign_up.xml             # Layout for SignUpFragment
+│   ├── fragment_password.xml             # Layout for SignUpFragment
 │   ├── fragment_otp_verification.xml    # Layout for OtpVerificationFragment
 │   └── fragment_home.xml                # Layout for HomeFragment
 ├── values/
