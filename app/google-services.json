@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "406155678859",
+    "project_id": "authenotp-a0823",
+    "storage_bucket": "authenotp-a0823.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:406155678859:android:cec3029d016bd1d365708e",
+        "android_client_info": {
+          "package_name": "com.pakelcomedy.authenotp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "406155678859-2kul104fsj32nt3a68psmldl69hebc3e.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.pakelcomedy.authenotp",
+            "certificate_hash": "f789543f07d7082b7d5a2c6074c0060e0e946adf"
+          }
+        },
+        {
+          "client_id": "406155678859-uele0bihg3qsr127jm63isje1kdq6mjr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB0i30CR0zNP5Cdz8IoOpPCzL7kfmf8llk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "406155678859-uele0bihg3qsr127jm63isje1kdq6mjr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
