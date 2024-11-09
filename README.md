@@ -10,7 +10,12 @@ com/
         │   ├── OtpVerificationFragment.kt
         │   └── HomeFragment.kt
         ├── viewmodel/
-        │   └── AuthViewModel.kt
+        │   ├── AuthViewModel.kt
+        │   ├── SignInViewModel.kt
+        │   ├── SignUpViewModel.kt
+        │   ├── PasswordViewModel.kt
+        │   ├── OtpVerificationViewModel.kt
+        │   └── HomeViewModel.kt
         └── data/
             └── model/
                 └── User.kt
