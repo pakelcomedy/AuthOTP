@@ -11,7 +11,6 @@ com/
         │   └── HomeFragment.kt
         ├── viewmodel/
         │   ├── AuthViewModel.kt
-        │   ├── SignInViewModel.kt
         │   ├── SignUpViewModel.kt
         │   ├── PasswordViewModel.kt
         │   ├── OtpVerificationViewModel.kt
