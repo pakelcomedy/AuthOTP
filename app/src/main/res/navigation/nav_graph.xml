@@ -17,6 +17,9 @@
         <action
             android:id="@+id/action_signUpFragment_to_otpVerificationFragment"
             app:destination="@id/otpVerificationFragment" />
+        <argument
+            android:name="email"
+            app:argType="string" />
     </fragment>
 
     <!-- OTP Verification Fragment -->
@@ -31,6 +34,9 @@
         <action
             android:id="@+id/action_otpVerificationFragment_to_passwordFragment"
             app:destination="@id/passwordFragment" />
+        <argument
+            android:name="email"
+            app:argType="string" />
     </fragment>
 
     <!-- Password Fragment (Set password after OTP verification) -->

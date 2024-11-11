@@ -53,7 +53,11 @@ class SignUpFragment : Fragment() {
                 when (it.status) {
                     SignUpViewModel.AuthStatus.SUCCESS -> {
                         // Navigate to OTP Verification after successful registration
-                        findNavController().navigate(R.id.action_signUpFragment_to_otpVerificationFragment)
+                        val email = binding.emailEditText.text.toString().trim()
+                        val bundle = Bundle().apply {
+                            putString("email", email) // Pass email to OTP verification fragment
+                        }
+                        findNavController().navigate(R.id.action_signUpFragment_to_otpVerificationFragment, bundle)
                     }
                     SignUpViewModel.AuthStatus.FAILURE -> {
                         // Show an error message when registration fails

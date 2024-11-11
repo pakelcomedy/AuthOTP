@@ -32,8 +32,11 @@ class OtpVerificationFragment : Fragment() {
         // Inflate the layout for this fragment using ViewBinding
         _binding = FragmentOtpVerificationBinding.inflate(inflater, container, false)
 
-        // Get email from arguments or from previous fragment/activity
-        userEmail = arguments?.getString("email") // or retrieve it some other way
+        // Get email from arguments
+        userEmail = arguments?.getString("email") // Get the email from the arguments
+
+        // Debug log to verify the email value
+        Log.d("OtpVerificationFragment", "Received Email: $userEmail")
 
         return binding.root
     }
@@ -68,18 +71,20 @@ class OtpVerificationFragment : Fragment() {
         }
 
         // Handle verify button click
-// Inside onViewCreated
         binding.verifyButton.setOnClickListener {
             val otpCode = binding.otpEditText.text.toString().trim()
 
             // Debug log to check the value of otpCode
             Log.d("OtpVerificationFragment", "Entered OTP: $otpCode")
 
-            if (otpCode.isNotEmpty() && userEmail != null) {
+            // Check if the OTP code is empty
+            if (otpCode.isEmpty()) {
+                Toast.makeText(requireContext(), "Please enter the OTP code", Toast.LENGTH_SHORT).show()
+            } else if (userEmail != null) {
                 // Call verifyOtp method in ViewModel with both email and otpCode
                 otpVerificationViewModel.verifyOtp(userEmail!!, otpCode)
             } else {
-                Toast.makeText(requireContext(), "Please enter the OTP code", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Email is not available. Cannot verify OTP.", Toast.LENGTH_SHORT).show()
             }
         }
 
