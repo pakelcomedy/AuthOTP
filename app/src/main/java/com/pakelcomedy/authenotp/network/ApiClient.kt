@@ -6,7 +6,7 @@ import okhttp3.OkHttpClient
 
 object ApiClient {
 
-    private const val BASE_URL = "https://342c-125-166-117-255.ngrok-free.app/TestSignUp/"
+    private const val BASE_URL = "https://8d2c-125-166-119-60.ngrok-free.app/TestSignUp/"
 
     private val retrofit by lazy {
         Retrofit.Builder()

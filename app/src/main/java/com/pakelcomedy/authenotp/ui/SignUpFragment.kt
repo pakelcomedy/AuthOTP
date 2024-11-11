@@ -10,13 +10,13 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.pakelcomedy.authenotp.R
 import com.pakelcomedy.authenotp.databinding.FragmentSignUpBinding
-import com.pakelcomedy.authenotp.viewmodel.AuthViewModel
+import com.pakelcomedy.authenotp.viewmodel.SignUpViewModel
 
 class SignUpFragment : Fragment() {
 
     private var _binding: FragmentSignUpBinding? = null
     private val binding get() = _binding!!
-    private val viewModel: AuthViewModel by viewModels()
+    private val viewModel: SignUpViewModel by viewModels() // Menggunakan SignUpViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -48,18 +48,18 @@ class SignUpFragment : Fragment() {
         }
 
         // Observe ViewModel for registration result
-        viewModel.authResult.observe(viewLifecycleOwner) { result ->
+        viewModel.signUpResult.observe(viewLifecycleOwner) { result ->
             result?.let {
                 when (it.status) {
-                    AuthViewModel.AuthStatus.SUCCESS -> {
+                    SignUpViewModel.AuthStatus.SUCCESS -> {
                         // Navigate to OTP Verification after successful registration
                         findNavController().navigate(R.id.action_signUpFragment_to_otpVerificationFragment)
                     }
-                    AuthViewModel.AuthStatus.FAILURE -> {
+                    SignUpViewModel.AuthStatus.FAILURE -> {
                         // Show an error message when registration fails
                         Toast.makeText(requireContext(), it.message ?: "Registration failed", Toast.LENGTH_SHORT).show()
                     }
-                    AuthViewModel.AuthStatus.LOADING -> {
+                    SignUpViewModel.AuthStatus.LOADING -> {
                         // Optionally show a loading spinner if needed
                     }
                 }

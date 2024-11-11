@@ -1,25 +1,29 @@
 package com.pakelcomedy.authenotp.ui
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.pakelcomedy.authenotp.R
 import com.pakelcomedy.authenotp.databinding.FragmentOtpVerificationBinding
-import com.pakelcomedy.authenotp.viewmodel.AuthViewModel
+import com.pakelcomedy.authenotp.viewmodel.OtpVerificationViewModel
 
 class OtpVerificationFragment : Fragment() {
 
-    // ViewModel for authentication
-    private val authViewModel: AuthViewModel by activityViewModels()
+    // ViewModel for OTP verification
+    private val otpVerificationViewModel: OtpVerificationViewModel by viewModels()
 
     // ViewBinding instance
     private var _binding: FragmentOtpVerificationBinding? = null
     private val binding get() = _binding!!
+
+    // Email variable to be used in resendOtp
+    private var userEmail: String? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -27,24 +31,28 @@ class OtpVerificationFragment : Fragment() {
     ): View {
         // Inflate the layout for this fragment using ViewBinding
         _binding = FragmentOtpVerificationBinding.inflate(inflater, container, false)
+
+        // Get email from arguments or from previous fragment/activity
+        userEmail = arguments?.getString("email") // or retrieve it some other way
+
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Observe authentication result for OTP verification
-        authViewModel.authResult.observe(viewLifecycleOwner) { result ->
+        // Observe OTP verification result
+        otpVerificationViewModel.otpResult.observe(viewLifecycleOwner) { result ->
             when (result?.status) {
-                AuthViewModel.AuthStatus.SUCCESS -> {
+                OtpVerificationViewModel.AuthStatus.SUCCESS -> {
                     // Navigate to PasswordFragment after successful OTP verification
                     findNavController().navigate(R.id.action_otpVerificationFragment_to_passwordFragment)
                     Toast.makeText(requireContext(), "OTP verified successfully!", Toast.LENGTH_SHORT).show()
                 }
-                AuthViewModel.AuthStatus.FAILURE -> {
+                OtpVerificationViewModel.AuthStatus.FAILURE -> {
                     Toast.makeText(requireContext(), result.message ?: "Invalid OTP. Please try again.", Toast.LENGTH_SHORT).show()
                 }
-                AuthViewModel.AuthStatus.LOADING -> {
+                OtpVerificationViewModel.AuthStatus.LOADING -> {
                     // Show loading spinner during OTP verification
                     showLoading(true)
                 }
@@ -54,18 +62,22 @@ class OtpVerificationFragment : Fragment() {
             }
 
             // Hide loading spinner after result is received
-            if (result?.status != AuthViewModel.AuthStatus.LOADING) {
+            if (result?.status != OtpVerificationViewModel.AuthStatus.LOADING) {
                 showLoading(false)
             }
         }
 
         // Handle verify button click
+// Inside onViewCreated
         binding.verifyButton.setOnClickListener {
             val otpCode = binding.otpEditText.text.toString().trim()
 
-            if (otpCode.isNotEmpty()) {
-                // Call verifyOtp method
-                authViewModel.verifyOtp(otpCode)
+            // Debug log to check the value of otpCode
+            Log.d("OtpVerificationFragment", "Entered OTP: $otpCode")
+
+            if (otpCode.isNotEmpty() && userEmail != null) {
+                // Call verifyOtp method in ViewModel with both email and otpCode
+                otpVerificationViewModel.verifyOtp(userEmail!!, otpCode)
             } else {
                 Toast.makeText(requireContext(), "Please enter the OTP code", Toast.LENGTH_SHORT).show()
             }
@@ -73,9 +85,12 @@ class OtpVerificationFragment : Fragment() {
 
         // Handle resend OTP link click
         binding.resendOtpTextView.setOnClickListener {
-            // Call resendOtp
-            authViewModel.resendOtp()
-            Toast.makeText(requireContext(), "OTP resent. Please check your messages.", Toast.LENGTH_SHORT).show()
+            userEmail?.let {
+                otpVerificationViewModel.resendOtp(it)
+                Toast.makeText(requireContext(), "OTP resent. Please check your messages.", Toast.LENGTH_SHORT).show()
+            } ?: run {
+                Toast.makeText(requireContext(), "Email not available. Cannot resend OTP.", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 

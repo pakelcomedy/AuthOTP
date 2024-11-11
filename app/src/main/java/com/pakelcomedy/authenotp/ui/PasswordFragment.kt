@@ -6,20 +6,22 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.pakelcomedy.authenotp.R
 import com.pakelcomedy.authenotp.databinding.FragmentPasswordBinding
-import com.pakelcomedy.authenotp.viewmodel.AuthViewModel
+import com.pakelcomedy.authenotp.viewmodel.PasswordViewModel
 
 class PasswordFragment : Fragment() {
 
-    // ViewModel for authentication
-    private val authViewModel: AuthViewModel by activityViewModels()
+    // ViewModel for password management
+    private val passwordViewModel: PasswordViewModel by viewModels()
 
     // ViewBinding instance
     private var _binding: FragmentPasswordBinding? = null
     private val binding get() = _binding!!
+
+    private var userId: String? = null  // Variable to store userId
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -27,6 +29,10 @@ class PasswordFragment : Fragment() {
     ): View {
         // Inflate the layout for this fragment using ViewBinding
         _binding = FragmentPasswordBinding.inflate(inflater, container, false)
+
+        // Retrieve userId from arguments passed through navigation
+        userId = arguments?.getString("userId") // or "email" depending on what you passed
+
         return binding.root
     }
 
@@ -43,24 +49,26 @@ class PasswordFragment : Fragment() {
                 showLoading(true)
 
                 // Call ViewModel method to set up password
-                authViewModel.setPassword(password).observe(viewLifecycleOwner) { result ->
-                    when (result.status) {
-                        AuthViewModel.AuthStatus.SUCCESS -> {
-                            // Navigate to HomeFragment after password setup is complete
-                            findNavController().navigate(R.id.action_passwordFragment_to_homeFragment)
-                            Toast.makeText(requireContext(), "Password set successfully!", Toast.LENGTH_SHORT).show()
+                userId?.let {
+                    passwordViewModel.setPassword(it, password).observe(viewLifecycleOwner) { result ->
+                        when (result.status) {
+                            PasswordViewModel.AuthStatus.SUCCESS -> {
+                                // Navigate to HomeFragment after password setup is complete
+                                findNavController().navigate(R.id.action_passwordFragment_to_homeFragment)
+                                Toast.makeText(requireContext(), "Password set successfully!", Toast.LENGTH_SHORT).show()
+                            }
+                            PasswordViewModel.AuthStatus.FAILURE -> {
+                                // Show error message if setting password fails
+                                Toast.makeText(requireContext(), result.message ?: "Failed to set password.", Toast.LENGTH_SHORT).show()
+                            }
+                            PasswordViewModel.AuthStatus.LOADING -> {
+                                // Loading state, no additional action needed as loading is already shown
+                            }
                         }
-                        AuthViewModel.AuthStatus.FAILURE -> {
-                            // Show error message if setting password fails
-                            Toast.makeText(requireContext(), result.message ?: "Failed to set password.", Toast.LENGTH_SHORT).show()
+                        // Hide loading spinner after result is received
+                        if (result.status != PasswordViewModel.AuthStatus.LOADING) {
+                            showLoading(false)
                         }
-                        AuthViewModel.AuthStatus.LOADING -> {
-                            // Loading state, no additional action needed as loading is already shown
-                        }
-                    }
-                    // Hide loading spinner after result is received
-                    if (result.status != AuthViewModel.AuthStatus.LOADING) {
-                        showLoading(false)
                     }
                 }
             }
