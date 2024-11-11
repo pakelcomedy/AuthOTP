@@ -15,9 +15,15 @@ com/
         │   ├── PasswordViewModel.kt
         │   ├── OtpVerificationViewModel.kt
         │   └── HomeViewModel.kt
-        └── data/
-            └── model/
-                └── User.kt
+        └── model/
+        │   ├── User.kt
+        │   ├── OtpRequest.kt
+        │   └── UpdatePasswordRequest.kt
+        └── network/
+        │   ├── ApiClient.kt
+        │   └── ApiService.kt
+        └── utils/
+            └── EmailSender.kt
 
 res/
 ├── layout/
