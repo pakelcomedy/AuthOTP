@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import com.pakelcomedy.authenotp.model.OtpRequest
 import com.pakelcomedy.authenotp.network.ApiClient
 import okhttp3.ResponseBody
+import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -20,7 +21,7 @@ class OtpVerificationViewModel : ViewModel() {
     private val _otpResult = MutableLiveData<AuthResult>()
     val otpResult: LiveData<AuthResult> get() = _otpResult
 
-    data class AuthResult(val status: AuthStatus, val message: String? = null)
+    data class AuthResult(val status: AuthStatus, val message: String? = null, val userId: String? = null)
 
     // Method untuk verifikasi OTP
     fun verifyOtp(email: String, otpCode: String) {
@@ -32,9 +33,13 @@ class OtpVerificationViewModel : ViewModel() {
         // Make the API call to verify OTP
         ApiClient.apiService.verifyOtp(otpRequest).enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
-                if (response.isSuccessful) {
-                    // Post result on the main thread
-                    _otpResult.postValue(AuthResult(AuthStatus.SUCCESS, "OTP verified successfully"))
+                if (response.isSuccessful && response.body() != null) {
+                    val responseBody = response.body()!!.string()
+                    val jsonObject = JSONObject(responseBody)
+                    val userId = jsonObject.optString("userId") // Extract userId from JSON response
+
+                    // Post success result with userId on the main thread
+                    _otpResult.postValue(AuthResult(AuthStatus.SUCCESS, "OTP verified successfully", userId))
                 } else {
                     // Post failure result on the main thread
                     _otpResult.postValue(AuthResult(AuthStatus.FAILURE, "Invalid OTP"))

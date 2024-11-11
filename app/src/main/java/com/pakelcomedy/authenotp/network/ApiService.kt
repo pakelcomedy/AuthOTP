@@ -13,7 +13,7 @@ import retrofit2.http.Query
 
 interface ApiService {
 
-    // GET request to retrieve user data by email
+    // GET request to retrieve user data by email (for email based query)
     @GET("authentication.php")
     fun getUserByEmail(@Query("email") email: String): Call<User>
 
@@ -32,4 +32,8 @@ interface ApiService {
     // POST request to resend OTP
     @POST("authentication.php")
     fun resendOtp(@Body email: String): Call<ResponseBody>
+
+    // GET request to retrieve user data by UID
+    @GET("user.php")  // Make sure your API is ready to handle this query
+    fun getUserData(@Query("uid") uid: String): Call<User>
 }

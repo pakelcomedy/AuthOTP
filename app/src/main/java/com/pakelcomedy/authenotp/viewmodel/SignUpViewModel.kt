@@ -51,7 +51,7 @@ class SignUpViewModel(application: Application) : AndroidViewModel(application) 
             email = email,
             nama_pengguna = namaPengguna,
             nama_lengkap = namaLengkap,
-            role = "penulis",  // Example role, adjust as needed
+            role = "pembaca",  // Example role, adjust as needed
             password = "temporaryPassword",  // Set a temporary password, will be updated later
             otp = currentOtp,
             otp_expiry = otpExpiry,  // Send the properly formatted expiry date

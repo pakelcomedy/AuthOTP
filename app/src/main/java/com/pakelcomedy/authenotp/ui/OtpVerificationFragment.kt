@@ -48,9 +48,16 @@ class OtpVerificationFragment : Fragment() {
         otpVerificationViewModel.otpResult.observe(viewLifecycleOwner) { result ->
             when (result?.status) {
                 OtpVerificationViewModel.AuthStatus.SUCCESS -> {
-                    // Navigate to PasswordFragment after successful OTP verification
-                    findNavController().navigate(R.id.action_otpVerificationFragment_to_passwordFragment)
-                    Toast.makeText(requireContext(), "OTP verified successfully!", Toast.LENGTH_SHORT).show()
+                    val userId = result.userId // Dapatkan userId dari result
+                    if (userId != null) {
+                        val bundle = Bundle().apply {
+                            putString("userId", userId) // Sertakan userId
+                        }
+                        findNavController().navigate(R.id.action_otpVerificationFragment_to_passwordFragment, bundle)
+                        Toast.makeText(requireContext(), "OTP verified successfully!", Toast.LENGTH_SHORT).show()
+                    } else {
+                        Toast.makeText(requireContext(), "User ID is missing.", Toast.LENGTH_SHORT).show()
+                    }
                 }
                 OtpVerificationViewModel.AuthStatus.FAILURE -> {
                     Toast.makeText(requireContext(), result.message ?: "Invalid OTP. Please try again.", Toast.LENGTH_SHORT).show()

@@ -48,6 +48,9 @@
         <action
             android:id="@+id/action_passwordFragment_to_homeFragment"
             app:destination="@id/homeFragment" />
+        <argument
+            android:name="email"
+            app:argType="string" />
     </fragment>
 
     <!-- SignIn Fragment -->
@@ -73,6 +76,9 @@
         <action
             android:id="@+id/action_homeFragment_to_signInFragment"
             app:destination="@id/signInFragment" />
+        <argument
+            android:name="userId"
+            app:argType="string" />
     </fragment>
 
 </navigation>
